@@ -1,0 +1,10 @@
+Buildfile: Y:\Documents\Custom Widgets\ComparisonFlag\test\deployment\build_core.xml
+
+deploy:
+    [unzip] Expanding: C:\Program Files\Mendix\5.20.0\modeler\deployment.mxz into Y:\Documents\Custom Widgets\ComparisonFlag\test\deployment
+
+BUILD SUCCESSFUL
+Total time: 0 seconds
+
+
+

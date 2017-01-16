@@ -4,8 +4,6 @@ define([
 
     "mxui/dom",
     "dojo/dom",
-    "dojo/dom-prop",
-    "dojo/dom-geometry",
     "dojo/dom-class",
     "dojo/dom-style",
     "dojo/dom-construct",
@@ -16,15 +14,23 @@ define([
     "dojo/_base/event",
 
 
-], function (declare, _WidgetBase, dom, dojoDom, dojoProp, dojoGeometry, dojoClass, dojoStyle, dojoConstruct, dojoArray, dojoLang, dojoText, dojoHtml, dojoEvent) {
+], function (declare, _WidgetBase, dom, dojoDom, dojoClass, dojoStyle, dojoConstruct, dojoArray, dojoLang, dojoText, dojoHtml, dojoEvent) {
     "use strict";
 
     return declare("ComparisonFlag.widget.ComparisonFlag", [ _WidgetBase ], {
+
+		//From XML file
+		baseAttribute: "",
+		compareEntity: "",
+		compareAttribute: "",
+		classToAdd: "",
+		setOnMatch: true,
 
 
         // Internal variables.
         _handles: null,
         _contextObj: null,
+		_referenceName: "",
 
         constructor: function () {
             this._handles = [];
@@ -41,10 +47,6 @@ define([
             this._updateRendering(callback);
         },
 
-        resize: function (box) {
-          logger.debug(this.id + ".resize");
-        },
-
         uninitialize: function () {
           logger.debug(this.id + ".uninitialize");
         },
@@ -52,14 +54,46 @@ define([
         _updateRendering: function (callback) {
             logger.debug(this.id + "._updateRendering");
 
-            if (this._contextObj !== null) {
-                dojoStyle.set(this.domNode, "display", "block");
-            } else {
-                dojoStyle.set(this.domNode, "display", "none");
-            }
+			var refGuid = this._getReferenceGuid(this.compareEntity);
+			if (refGuid) {
+				this._compare(refGuid, callback);
+			} else {
+				dojoClass.remove(this.domNode.parentNode, this.classToAdd);
+				mendix.lang.nullExec(callback);
+			}
+        },
 
-            mendix.lang.nullExec(callback);
-        }
+		_getReferenceGuid: function (referenceName) {
+			if (this.compareEntity) {
+				this._referenceName = this.compareEntity.split("/")[0];
+			}
+
+			if (this._referenceName && this._contextObj && this._contextObj.get(this._referenceName) !== ""){
+				return this._contextObj.get(this._referenceName);
+			} else {
+				return null;
+			}
+		},
+
+		_compare: function (targetGuid, theCallback) {
+			mx.data.get({
+			    guid: targetGuid,
+			    callback: dojoLang.hitch(this, function(obj) {
+			        //callback(obj);
+					if (obj && this._contextObj) {
+						var match = obj.get(this.compareAttribute) === this._contextObj.get(this.baseAttribute);
+						if (match === this.setOnMatch) {
+							dojoClass.add(this.domNode.parentNode, this.classToAdd);
+						} else {
+							dojoClass.remove(this.domNode.parentNode, this.classToAdd);
+						}
+					} else {
+						dojoClass.remove(this.domNode.parentNode, this.classToAdd);
+					}
+					if(theCallback) {theCallback();}
+			    })
+			});
+		}
     });
 });
 

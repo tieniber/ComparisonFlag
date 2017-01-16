@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<widget id="ComparisonFlag.widget.ComparisonFlag" needsEntityContext="true" xmlns="http://www.mendix.com/widget/1.0/">
+    <name>ComparisonFlag</name>
+    <description>The description of this widget.</description>
+
+    <icon />
+
+    <properties>
+		<property key="baseAttribute" type="attribute" required="true" isPath="no">
+			<caption>Base attribute</caption>
+			<category>Behavior</category>
+			<description>The local attribute to compare.</description>
+			<attributeTypes>
+				<attributeType name="String"/>
+				<attributeType name="Enum"/>
+				<attributeType name="Boolean"/>
+				<attributeType name="Integer"/>
+				<attributeType name="Decimal"/>
+				<attributeType name="Long"/>
+				<attributeType name="DateTime"/>
+			</attributeTypes>
+		</property>
+
+		<property key="compareEntity" type="entity" required="true" isPath="yes" pathType="reference">
+			<caption>Reference To Check</caption>
+			<category>Behavior</category>
+			<description>Select a referenced entity that contains the comparison attribute.</description>
+		</property>
+
+		<property key="compareAttribute" type="attribute" required="true" entityProperty="compareEntity">
+			<caption>Comparison Attribute</caption>
+			<category>Behavior</category>
+			<description>The remote at to compare.</description>
+			<attributeTypes>
+				<attributeType name="String"/>
+				<attributeType name="Enum"/>
+				<attributeType name="Boolean"/>
+				<attributeType name="Integer"/>
+				<attributeType name="Decimal"/>
+				<attributeType name="Long"/>
+				<attributeType name="DateTime"/>
+			</attributeTypes>
+		</property>
+
+		<property key="classToAdd" type="string" required="true">
+			<caption>Class to add</caption>
+			<category>Behavior</category>
+			<description>CSS class to add to the widget's parent</description>
+		</property>
+
+		<property key="setOnMatch" type="boolean" required="true" defaultValue="true">
+			<caption>Set of match</caption>
+			<category>Behavior</category>
+			<description>If true, matching attributes activates the CSS class. If false, differing attributes activate the CSS class.</description>
+		</property>
+    </properties>
+</widget>

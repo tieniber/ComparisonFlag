@@ -1,0 +1,1 @@
+﻿define(["ComparisonFlag/widget/ComparisonFlag"], {});
